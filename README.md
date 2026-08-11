@@ -12,9 +12,9 @@ Spin up AI trading agents on **Kalshi** and **Polymarket**, run them in paper or
 ![Supabase](https://img.shields.io/badge/Supabase-Postgres-3ecf8e)
 ![Deploy](https://img.shields.io/badge/Deploy-Railway%20%2B%20Vercel-7c3aed)
 
-<a href="public/banner-video.mp4"><img src="docs/images/demo.gif" width="360" alt="Prediction Market Agents — product demo" /></a>
+<a href="https://youtu.be/rehvNpq0XD4"><img src="docs/images/demo-thumbnail.jpg" width="640" alt="Watch the demo — Infra for Trading Agents" /></a>
 
-<sub>▶ <a href="public/banner-video.mp4">Watch the full demo (MP4)</a></sub>
+<sub>▶ <a href="https://youtu.be/rehvNpq0XD4">Watch the demo on YouTube</a></sub>
 
 </div>
 
@@ -1419,7 +1419,7 @@ prediction-market-agents/
 |   |-- tail-buyer-kalshi/        # Tail Buyer (Kalshi)
 |   |-- tail-buyer-poly/          # Tail Buyer (Polymarket)
 |
-|-- docs/images/                   # Screenshots + demo GIF for the README
+|-- docs/images/                   # Screenshots + demo thumbnail for the README
 |-- tailwind.config.ts            # Design system
 |-- package.json                  # Frontend dependencies
 |-- .env.example                  # All environment variables (no secrets)
