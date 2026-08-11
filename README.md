@@ -4,8 +4,6 @@
 
 ### Deploy, test, and compare autonomous trading agents on prediction markets
 
-Spin up AI trading agents on **Kalshi** and **Polymarket**, run them in paper or live mode, and benchmark strategies side by side — from a multi-model **Council** debate to single-model superforecasters and pure mechanical plays.
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Python%203.12-009688)
@@ -20,45 +18,58 @@ Spin up AI trading agents on **Kalshi** and **Polymarket**, run them in paper or
 
 ---
 
-**Everyone has a theory about prediction markets. Almost no one has a clean way to _test_ it.**
+## What it is
 
-"Fade the longshots." "The crowd overreacts to news." "An LLM could forecast these better than the market prices them." The ideas are everywhere — the infrastructure to actually **prove them on live markets** is not.
+A self-hostable platform for running automated trading strategies on prediction markets (Kalshi and Polymarket). You configure a strategy as an *agent*; it runs on a schedule, analyzes markets, and places orders through a validated execution pipeline. Every order — paper or live — passes the same deterministic risk checks before it reaches an exchange. Trades, P&L, logs, and settlement stream to a dashboard, and a background pipeline runs post-mortems and tracks calibration so strategies can be compared on equal footing. Multi-tenant (per-user isolation via Supabase Auth + row-level security), MIT licensed.
 
-**Prediction Market Agents is that infrastructure.** Turn a trading strategy into an autonomous agent, run it in paper mode against real-time **Kalshi** and **Polymarket** data, and watch it research → decide → trade — then let the platform keep score with per-trade post-mortems, calibration tracking, and side-by-side benchmarking. Test as many strategies as you want, compare them on the same markets, and promote only the ones that actually work to live trading — before a dollar is ever at risk.
+## How it works
+
+1. **Configure & deploy** an agent (strategy + risk rules) in the dashboard.
+2. **Schedule** — a publisher enqueues a cycle for each due agent (arq on Redis).
+3. **Run cycle** — a worker runs the agent as an isolated subprocess: ingest markets → research (Perplexity) → analyze & decide (LLMs) → size the position.
+4. **Intercept & validate** — the order is POSTed to the backend, queued, and checked against per-agent and account-level rules. No AI in the safety layer.
+5. **Execute** — training mode records a paper trade; live mode places the real order on Kalshi/Polymarket.
+6. **Observe** — trades, P&L, and logs stream to the dashboard over WebSocket; a background pipeline runs post-mortems and calibration.
+
+Full topology is in [System Architecture](#system-architecture).
 
 ## Key features
 
-- 🧠 **Strategies as deployable agents.** Ship a trading idea as an autonomous bot that scans markets, reasons about them, sizes positions, and places orders on a schedule — no glue code to write.
-- 🧪 **Test before you risk.** Every agent runs in **training / paper mode** against **live** market data first; flip to **live mode** only when you're convinced. Training and live are tracked as separate books.
-- ⚖️ **Compare strategies head-to-head.** A benchmarking suite, leaderboard, and evaluations views score agents on the same markets — so *"which strategy is actually better?"* finally has an answer.
-- 🏛️ **Council V2 — the flagship strategy.** A 5-agent adversarial debate (Forecaster → Bull → Bear → Risk Manager → Trader) over live Perplexity research, **price-blinded** to prevent anchoring, with a Trader agent as the final decision gate. → [deep dive](#council-v2-kalshi-v2-polymarket-v2)
-- 🔀 **Two exchanges, one pipeline.** Trade **Kalshi** (CFTC-regulated event contracts) and **Polymarket** (on-chain, Polygon) through a single, identical validation and execution path.
-- 🛡️ **Hard risk guardrails.** A deterministic rules engine enforces per-agent *and* account-level limits — max position size, daily-loss kill switch, confidence floors, cooldowns, AI-budget caps — on **every** order before it reaches an exchange. No AI in the safety layer.
-- 🔐 **Encrypted by default.** Exchange API keys and wallet keys are stored **AES-256-GCM** encrypted and decrypted only into short-lived `0400` temp files for bot subprocesses — never in plaintext, never in the app's environment.
-- 📚 **Trade intelligence that compounds.** An AI "wiki" pipeline runs post-mortems on settled trades, detects behavioral patterns, tracks calibration, and surfaces what to tune next.
-- 📈 **Real-time dashboard.** Live logs, open positions, P&L, and settlement stream over WebSocket as your agents trade.
-- 🏢 **Multi-tenant & self-hostable.** Per-user isolation via Supabase Auth + row-level security; deploy the whole stack on Railway + Vercel. MIT licensed.
+- **Strategies as agents** — deploy a strategy as a scheduled autonomous bot; no glue code.
+- **Paper and live modes** — run against live market data in training mode, then switch to live per agent; the two are tracked as separate books.
+- **Benchmarking** — a leaderboard and evaluations views score agents on the same markets.
+- **Three strategies, six bots** — Council V2 (5-agent LLM debate), Superforecaster (single model), Tail Buyer (mechanical, no AI); each on Kalshi and Polymarket.
+- **Deterministic risk engine** — per-agent and account-level limits (max position size, daily-loss kill switch, confidence floor, cooldowns, AI-budget) enforced on every order.
+- **Encrypted credentials** — exchange and wallet keys stored AES-256-GCM; decrypted only into short-lived `0400` temp files for bot subprocesses.
+- **Trade intelligence** — post-mortems on settled trades, pattern detection, and calibration tracking.
+- **Real-time dashboard** — live logs, open positions, P&L, and settlement over WebSocket.
 
-> **Under the hood:** Next.js + FastAPI + Supabase Postgres + Redis/arq queue · LLMs via OpenRouter (Claude Opus, GPT, Grok) + Perplexity Sonar for research · 6 built-in bots across 3 strategies (Council V2, Superforecaster, Tail Buyer).
+## Stack
 
-<details>
-<summary><b>📸 Screenshots</b> — the product UI (click to expand)</summary>
+| Layer | Tech |
+|---|---|
+| Frontend | Next.js 14 (App Router), React, Tailwind — deploy on Vercel |
+| Backend | FastAPI (Python 3.12), asyncpg, arq — deploy on Railway |
+| Data & auth | Supabase (Postgres + Auth + row-level security) |
+| Queue | Redis (arq) |
+| LLMs | OpenRouter (Claude Opus, GPT, Grok) + Perplexity Sonar (research) |
+| Exchanges | Kalshi (REST, RSA-PSS) · Polymarket (CLOB via py-clob-client-v2, Polygon) |
 
-<br/>
+## What's in this repo
 
-**Council V2 — the flagship 5-agent debate**
-
-![Council V2 strategy documentation](docs/images/about-council-v2.png)
-
-**How it works — every trade flows through one validated pipeline**
-
-![How it works](docs/images/about-how-it-works.png)
-
-**Compare strategies side by side**
-
-![Strategies](docs/images/about-strategies.png)
-
-</details>
+```
+src/             Next.js frontend — dashboard, auth, public pages
+backend/         FastAPI API, orchestrator, arq worker, encryption, schema.sql, migrations
+  kalshi/          Kalshi client (RSA-PSS auth)
+  polymarket/      Polymarket CLOB client
+  twitter_poster/  optional X/Twitter poster
+bots/            6 trading bots (council-v2 · superforecaster · tail-buyer, × Kalshi/Polymarket)
+worker/          queue-worker Dockerfile
+docs/images/     screenshots + demo thumbnail
+DEPLOYMENT.md    step-by-step Supabase + Railway + Vercel setup
+.env.example     every environment variable (no secrets)
+LICENSE, NOTICE  MIT license + third-party attribution
+```
 
 ---
 
