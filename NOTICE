@@ -1,0 +1,30 @@
+Prediction Market Agents
+Copyright (c) 2026 Prediction Market Agents contributors
+
+This product is licensed under the MIT License (see the LICENSE file).
+
+===============================================================================
+Third-party attributions
+===============================================================================
+
+This project's Kalshi trading-agent implementation is derived from or inspired
+by the following MIT-licensed project:
+
+    kalshi-ai-trading-bot
+    https://github.com/ryanfrigo/kalshi-ai-trading-bot
+    Copyright (c) 2024 Kalshi AI Trading Bot
+    MIT License
+
+Its MIT permission notice is retained as required by that license and is
+reproduced in the LICENSE file of this repository.
+
+-------------------------------------------------------------------------------
+Notable open-source dependencies (see package.json / backend/pyproject.toml and
+each bot's requirements.txt for the full list):
+
+    Frontend : Next.js, React, Tailwind CSS, Supabase JS, SWR, Sentry
+    Backend  : FastAPI, asyncpg, pydantic, arq, cryptography, httpx, slowapi
+    Trading  : py-clob-client-v2 (Polymarket), web3, Kalshi REST (RSA-PSS auth)
+    LLM      : OpenRouter (Grok, Claude, GPT), Perplexity Sonar (research)
+
+All third-party libraries remain under their respective licenses.

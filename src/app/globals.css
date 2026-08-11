@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── Custom Fonts ── */
+@font-face {
+  font-family: 'RHPhonic';
+  src: url('/fonts/RHPhonic-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'RHPhonic';
+  src: url('/fonts/RHPhonic-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CapsuleSansText';
+  src: url('/fonts/CapsuleSansText-Book.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CapsuleSansText';
+  src: url('/fonts/CapsuleSansText-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CapsuleSansText';
+  src: url('/fonts/CapsuleSansText-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MartinaPlantijn';
+  src: url('/fonts/MartinaPlantijn-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --gain: #00C807;
+  --loss: #FF6B8A;
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --header-h: 96px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'CapsuleSansText', system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  background: var(--bg);
+  color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Headings use RH Phonic display font */
+h1, h2, h3 {
+  font-family: 'RHPhonic', 'CapsuleSansText', sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a1a1a;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a2a;
+}
+
+/* Number formatting */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Smooth transitions on all interactive elements */
+button, a, input, select, textarea {
+  transition: all 0.15s ease;
+}
+
+/* Card hover */
+.card-hover {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.card-hover:hover {
+  border-color: #222222;
+  background-color: #0f0f0f;
+}
+
+/* Terminal / log styles */
+.log-stream {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Sparkline container */
+.sparkline-container svg {
+  overflow: visible;
+}
+
+/* Time selector pills */
+.time-pill {
+  @apply px-2.5 py-1 text-[11px] font-medium rounded cursor-pointer transition-all;
+}
+.time-pill.active {
+  @apply bg-gain text-black;
+}
+.time-pill:not(.active) {
+  @apply text-text-tertiary hover:text-text-secondary;
+}
+
+/* Status badge base */
+.status-badge {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium;
+}
+
+/* Green focus glow for inputs */
+input:focus, select:focus, textarea:focus {
+  box-shadow: 0 0 0 3px rgba(0, 200, 7, 0.15);
+}
+
+/* Select dropdown arrow (white for dark theme) */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239E9E9E' d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+/* Scrolling ticker animation — duration set via inline style for consistent speed */
+.ticker-scroll {
+  animation: ticker-scroll 30s linear infinite;
+  width: max-content;
+  will-change: transform;
+}
+
+.ticker-scroll:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Scrolling bots pills animation */
+.bots-scroll {
+  animation: bots-scroll 25s linear infinite;
+  width: max-content;
+}
+
+.bots-scroll:hover {
+  animation-play-state: paused;
+}
+
+@keyframes bots-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-left {
+  animation: bots-scroll 30s linear infinite;
+}
+.animate-scroll-left:hover {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbar for mobile horizontal scroll */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Mobile safe areas ── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Mobile slide-in animation */
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.25s ease-out forwards;
+}

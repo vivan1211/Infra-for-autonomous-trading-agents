@@ -1,0 +1,21 @@
+# Prediction Market Agents
+
+> Build and deploy AI trading agents for prediction markets
+
+Prediction Market Agents lets you build, configure, and deploy AI trading agents that analyze prediction market questions on Kalshi and Polymarket. Each agent runs a structured debate between specialized AI roles: research analyst, forecaster, bull researcher, bear researcher, risk manager, and superforecaster — producing a consensus probability and automated trade decisions.
+
+## Public Trade Analysis Pages
+- URL pattern: https://www.example.com/t/{market-slug}
+- Each page contains: AI consensus probability, entry price, exchange, full bull/bear debate, risk scores, key arguments and factors
+
+## How It Works
+1. AI agents independently research and analyze a prediction market question
+2. Bull and bear researchers present opposing cases with key arguments
+3. A superforecaster synthesizes all perspectives into a consensus probability
+4. The system compares the AI consensus to market prices to find edges
+
+## Sitemap
+- https://www.example.com/sitemap.xml
+
+## Contact
+- Website: https://www.example.com
