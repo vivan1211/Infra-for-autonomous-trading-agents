@@ -1461,4 +1461,4 @@ its copyright notice is retained in [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
 Built and maintained by **[Vivan Puri](https://github.com/vivan1211)**.
 
-Contributions welcome — open an [issue](https://github.com/vivan1211/prediction-market-agents/issues) or a pull request.
+Contributions welcome — open an [issue](https://github.com/vivan1211/Infra-for-autonomous-trading-agents/issues) or a pull request.
