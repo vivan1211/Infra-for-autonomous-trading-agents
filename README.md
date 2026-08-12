@@ -1454,3 +1454,11 @@ its copyright notice is retained in [LICENSE](LICENSE) and [NOTICE](NOTICE).
 > decisions, for complying with the laws and exchange terms that apply to you,
 > and for the security of your API keys and funds. Run in **training/demo mode**
 > first; use **live mode** at your own risk.
+
+---
+
+## Author
+
+Built and maintained by **[Vivan Puri](https://github.com/vivan1211)**.
+
+Contributions welcome — open an [issue](https://github.com/vivan1211/prediction-market-agents/issues) or a pull request.
